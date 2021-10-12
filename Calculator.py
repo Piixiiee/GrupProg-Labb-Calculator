@@ -97,7 +97,10 @@ def eval_postfix(postfix_tokens):
             d1 = operand_stack.pop()
             d2 = operand_stack.pop()
             result = apply_operator(token, d1, d2)
-            operand_stack.append(result)
+            if result is nan:
+                raise Exception(DIV_BY_ZERO)
+            else:
+                operand_stack.append(result)
 
     return operand_stack[0]
 
