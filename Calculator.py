@@ -35,7 +35,7 @@ def infix_to_postfix(tokens):
     for char in tokens:
         if check_float(char):
             output.append(char)
-        elif char in "+-*/^":
+        elif char in OPERATORS:
             if len(operators) != 0:
                 top_of_stack = peek_at_deque(operators)
 
@@ -93,7 +93,7 @@ def eval_postfix(postfix_tokens):
     for token in postfix_tokens:
         if check_float(token):
             operand_stack.append(float(token))
-        if token in "+-*/^":
+        if token in OPERATORS:
             d1 = operand_stack.pop()
             d2 = operand_stack.pop()
             result = apply_operator(token, d1, d2)
@@ -109,7 +109,7 @@ def eval_postfix(postfix_tokens):
 def eval_expr(expr: str):
     if len(expr) == 0:
         return nan
-    tokens = expr.split()
+    tokens = tokenize(expr)
     postfix_tokens = infix_to_postfix(tokens)
     return eval_postfix(postfix_tokens)
 
@@ -152,7 +152,23 @@ def get_associativity(op: str):
 
 # ---------- Tokenize -----------------------
 def tokenize(expr: str):
-    return None   # TODO
+    temp_string = ''
+    tokens = []
+
+    for char in expr:
+        if check_float(char) or char == ".":
+            temp_string += char
+        elif char in '()+-*/^':
+            if len(temp_string) != 0:
+                tokens.append(temp_string)
+            tokens.append(char)
+            temp_string = ''
+        else:
+            raise Exception(MISSING_OPERAND)
+    if len(temp_string) != 0:
+        tokens.append(temp_string)
+
+    return tokens
 
 # TODO Possibly more methods
 
