@@ -209,3 +209,15 @@ def check_float(potential_float):
     except ValueError:
         return False
 
+<<<<<<< Updated upstream
+=======
+
+def test():
+    print(infix_to_postfix(['2', '+', '34', '*', '2']) == ['2', '34', '2', '*', '+'])
+    print(eval_postfix(['2', '34', '2', '*', '+']) == 70.0)
+    print(tokenize('2+34*2') == ['2', '+', '34', '*', '2'])
+
+
+if __name__ == '__main__':
+    test()
+>>>>>>> Stashed changes
