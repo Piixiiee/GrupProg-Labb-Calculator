@@ -28,7 +28,6 @@ OPERATORS:        str = "+-*/^"
 
 
 def infix_to_postfix(tokens):
-    # check_input(tokens)
     output = []
     operators = collections.deque()
 
@@ -109,6 +108,8 @@ def eval_postfix(postfix_tokens):
 def eval_expr(expr: str):
     if len(expr) == 0:
         return nan
+    elif not check_float(expr[-1]) and expr[-1] != ')':
+        raise Exception(MISSING_OPERAND)
     tokens = tokenize(expr)
     postfix_tokens = infix_to_postfix(tokens)
     return eval_postfix(postfix_tokens)
@@ -170,13 +171,11 @@ def tokenize(expr: str):
 
     return tokens
 
-# TODO Possibly more methods
-
 
 class CompareValue(Enum):
-    GREATER = 1
+    LESS = 1
     EQUAL = 2
-    LESS = 3
+    GREATER = 3
 
 
 def compare_precedence(o1, o2):
@@ -186,12 +185,6 @@ def compare_precedence(o1, o2):
         return CompareValue.EQUAL
     else:
         return CompareValue.LESS
-
-
-def check_input(test_input):  # TODO
-    for i in range(len(test_input)):
-        if (i + 1) % 2 == 0 and test_input[i] not in "+-*/^()":
-            raise Exception(OP_NOT_FOUND)
 
 
 def peek_at_deque(stack):
@@ -208,4 +201,3 @@ def check_float(potential_float):
         return True
     except ValueError:
         return False
-
